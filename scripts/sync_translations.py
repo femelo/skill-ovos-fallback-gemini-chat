@@ -6,8 +6,8 @@ import json
 from os.path import dirname
 import os
 
-locale = f"{dirname(dirname(__file__))}/src/locale"
-tx = f"{dirname(dirname(__file__))}/src/translations"
+locale = f"{dirname(dirname(__file__))}/src/skill_ovos_fallback_gemini_chat/locale"
+tx = f"{dirname(dirname(__file__))}/src/skill_ovos_fallback_gemini_chat/translations"
 
 
 for lang in os.listdir(tx):

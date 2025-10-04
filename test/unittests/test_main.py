@@ -9,6 +9,7 @@ from unittest.mock import MagicMock, Mock
 
 import pytest
 from ovos_utils.fakebus import FakeBus
+from ovos_bus_client.message import Message
 from skill_ovos_fallback_gemini_chat import (
     DEFAULT_SETTINGS, GeminiChatSkill
 )
@@ -47,8 +48,12 @@ class TestGeminiChatSkill(TestCase):
         cls.skill.speak_dialog = Mock()
 
     def setup(self: TestGeminiChatSkill) -> None:
-        self.skill.speak.reset_mock()
-        self.skill.speak_dialog.reset_mock()
+        if not self.skill:
+            raise ValueError("Skill not initialized")
+        if isinstance(self.skill.speak, Mock):
+            self.skill.speak.reset_mock()
+        if isinstance(self.skill.speak_dialog, Mock):
+            self.skill.speak_dialog.reset_mock()
         self.skill.play_audio = Mock()
         self.skill.log = MagicMock()
 
@@ -57,14 +62,19 @@ class TestGeminiChatSkill(TestCase):
         shutil.rmtree(cls.test_fs)
 
     def test_default_no_key(self: TestGeminiChatSkill) -> None:
+        assert self.skill is not None
         assert not self.skill.settings.get("key")
-        self.skill.ask_gemini_chat("Will my test pass?")
+        message = Message("test", {"utterance": "Will my test pass?"})
+        self.skill.ask_gemini_chat(message)
+        assert isinstance(self.skill.log, MagicMock)
         self.skill.log.error.assert_called()
+        assert isinstance(self.skill.speak_dialog, Mock)
         self.skill.speak_dialog.assert_not_called()  # no key, we log an error before speaking ever happens
         assert self.skill.settings.get("persona") == DEFAULT_SETTINGS["persona"]
         assert self.skill.settings.get("model") == DEFAULT_SETTINGS["model"]
 
     def test_default_with_key(self: TestGeminiChatSkill) -> None:
+        assert self.skill is not None
         self.skill.settings["key"] = "test"
         self.skill.settings.store()
         assert self.skill.settings.get("key") == "test"
@@ -72,6 +82,7 @@ class TestGeminiChatSkill(TestCase):
         assert self.skill.settings.get("model") == DEFAULT_SETTINGS["model"]
 
     def test_overriding_all_settings(self: TestGeminiChatSkill) -> None:
+        assert self.skill is not None
         self.skill.settings["key"] = "test"
         self.skill.settings["persona"] = "I am a test persona"
         self.skill.settings["model"] = "gpt-4-nitro"

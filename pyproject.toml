@@ -1,13 +1,15 @@
 [build-system]
-requires = ["setuptools>=65.0"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling >= 1.26"]
+build-backend = "hatchling.build"
 
 [tool.setuptools.packages.find]
 where = ["src"]
 
 [tool.setuptools.package-data]
-locale = ["*/*.dialog"]
-translations = ["*/*.json"]
+skill_ovos_fallback_gemini_chat = [
+    "**/*.dialog",
+    "**/*.json",
+]
 
 [project]
 name = "skill-ovos-fallback-gemini-chat"
@@ -39,3 +41,6 @@ dev = [
 [project.urls]
 Homepage = "https://github.com/femelo/skill-ovos-fallback-gemini-chat"
 Issues = "https://github.com/femelo/skill-ovos-fallback-gemini-chat/issues"
+
+[project.entry-points."ovos.plugin.skill"]
+"skill-ovos-fallback-gemini-chat.femelo" = "skill_ovos_fallback_gemini_chat:GeminiChatSkill"
