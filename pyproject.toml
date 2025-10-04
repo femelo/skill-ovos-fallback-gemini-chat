@@ -21,7 +21,7 @@ dynamic = ["version"]
 authors = [
   { name="Flávio De Melo", email="flavio.eler@gmail.com" },
 ]
-description = "A GUI client for OpenVoiceOS based on PyHTMX"
+description = "A fallback conversational skill based on Gemini service for OpenVoiceOS"
 readme = "README.md"
 requires-python = ">=3.10"
 classifiers = [
