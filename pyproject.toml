@@ -11,9 +11,13 @@ skill_ovos_fallback_gemini_chat = [
     "**/*.json",
 ]
 
+[tool.hatch.version]
+path = "src/skill_ovos_fallback_gemini_chat/__version__.py"
+
 [project]
 name = "skill-ovos-fallback-gemini-chat"
-version = "0.0.1"
+keywords = ["ovos", "skill", "plugin", "gemini", "chat"]
+dynamic = ["version"]
 authors = [
   { name="Flávio De Melo", email="flavio.eler@gmail.com" },
 ]
@@ -22,7 +26,7 @@ readme = "README.md"
 requires-python = ">=3.10"
 classifiers = [
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: Apache 2.0",
+    "License :: OSI Approved :: Apache Software License",
     "Operating System :: OS Independent",
 ]
 dependencies = [
